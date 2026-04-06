@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ImageSlider from "./imageSliderPics.jsx";
 import { useLottie } from "lottie-react";
-import Animation2 from "../animations/connect.json";
+import Animation2 from "../animations/Connect.json";
 
 function useRevealOnce() {
   const ref = useRef(null);
