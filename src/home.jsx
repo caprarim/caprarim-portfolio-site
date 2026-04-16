@@ -31,6 +31,48 @@ function useRevealOnce() {
 }
 
 const Home = () => {
+  let [aiANS, setAIAns] = useState("");
+  let [aiDisplay, setAIDisplay] = useState(false);
+  let [value, setValue] = useState("");
+  const QaA = [
+    {
+      que: "What is your name",
+      ans: "I am caprarim, a front-end developer who is on the journey to be a fullstack dev :)",
+      shortForm: /name|who/,
+    },
+    {
+      que: "Why did you start coding",  
+      ans: "Coding my passion and i enjoy it",
+      shortForm: /why|start|passion/,
+    },
+    {
+      que: "How much experience do you have",
+      ans: "I have 6 months of experience with front-end",
+      shortForm: /experience|long/,
+    },
+    {
+      que: "Do you have a portfolio?",
+      ans: "my work is uploaded in this website as well in my github",
+      shortForm: /portfolio | work | find | where/,
+    },
+    {
+      que: "hi",
+      ans: "Hello! What would you like to ask about me?",
+      shortForm: /hi | hey | hii | heya | hello/,
+    },
+  ];
+
+  function submitQuestion() {
+    QaA.map((q) => {
+      if (value === q.que) {
+        setAIAns(q.ans);
+      }
+      if (q.shortForm.test(value)) {
+        setAIAns(q.ans);
+      }
+    });
+    setValue("");
+  }
   const featuredProjects = [
     {
       imgSrc: "/projects/1.PNG",
@@ -159,8 +201,63 @@ const Home = () => {
     }, 220);
   }
 
+  const openAiAssistant = () => {
+    setAIDisplay(true);
+  };
+
+  const closeAiAssistant = () => {
+    setAIDisplay(false);
+  };
+
   return (
     <>
+      {aiDisplay && (
+        <div
+          onClick={closeAiAssistant}
+          className="fixed inset-0 z-[110] flex items-start justify-end bg-black/45 p-3 sm:p-5 lg:p-8"
+        >
+          <article
+            onClick={(event) => event.stopPropagation()}
+            className="mt-18 w-full max-w-[92vw] rounded-3xl border border-white/25 bg-gradient-to-br from-[#111827] via-[#1f2937] to-[#312e81] p-4 text-white shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-md sm:mt-20 sm:max-w-[460px] sm:p-6"
+          >
+            <div className="mb-4 flex items-start justify-between gap-3 sm:mb-5">
+              <h3 className="text-lg font-semibold tracking-wide text-white sm:text-2xl">
+                Ask me anything
+              </h3>
+              <button
+                type="button"
+                onClick={closeAiAssistant}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white transition hover:bg-white/20"
+              >
+                <span className="inline-flex items-center justify-center text-xl leading-none">
+                  ×
+                </span>
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:gap-4">
+              <input
+                type="text"
+                className="w-full rounded-xl border border-white/25 bg-white/95 px-4 py-3 text-sm tracking-wide text-black outline-none transition placeholder:text-gray-500 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/35 sm:text-base"
+                placeholder="Ask about my work, experience, or journey..."
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={submitQuestion}
+                className="w-full rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_20px_rgba(124,58,237,0.35)] transition hover:brightness-110 sm:text-base"
+              >
+                Submit
+              </button>
+              <p className="min-h-[68px] rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm leading-relaxed tracking-wide text-gray-100 sm:text-base">
+                {aiANS || "Ask a question and I will answer here."}
+              </p>
+            </div>
+          </article>
+        </div>
+      )}
+
       <div className="relative overflow-x-hidden lg:ml-[25px] lg:mr-[25px] ml-[15px] mr-[15px] min-h-screen">
         <section className="fixed left-1/2 top-4 z-50 w-[calc(100vw-30px)] -translate-x-1/2 lg:w-fit">
           <div className="rounded-[1.25rem] border border-white/10 bg-black/70 px-3 py-2 font-sans text-base font-medium text-white/70 shadow-[0_2px_8px_rgba(0,0,0,0.25)] backdrop-blur-md lg:rounded-full lg:px-3">
@@ -212,6 +309,13 @@ const Home = () => {
                 >
                   Work
                 </a>
+                <a
+                  href="#"
+                  onClick={() => setAIDisplay(true)}
+                  className="cursor-pointer rounded-full px-4 py-1.5 text-white/85 transition-colors duration-200 hover:bg-white/15 hover:text-white"
+                >
+                  AI
+                </a>
               </div>
             </div>
 
@@ -251,7 +355,15 @@ const Home = () => {
             </div>
           </div>
         </section>
-        <section
+        <button
+          type="button"
+          onClick={openAiAssistant}
+          className="fixed right-4 top-5 z-[105] flex items-center gap-2 rounded-full border border-violet-200/40 bg-gradient-to-r from-violet-600 via-indigo-600 to-fuchsia-600 px-4 py-2 font-sans text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-[0_10px_24px_rgba(79,70,229,0.35)] transition hover:scale-[1.03] hover:brightness-110 sm:right-6 sm:top-6 sm:px-5 sm:py-2.5 sm:text-base"
+        >
+          <span className="text-base sm:text-lg">🤖</span>
+          <span>AI</span>
+        </button>
+        <section  
           className="relative isolate min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat lg:pt-28 lg:pb-8"
           style={{
             backgroundImage: "url('/myBg.png')",

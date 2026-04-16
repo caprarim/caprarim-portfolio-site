@@ -1,6 +1,7 @@
 import Home from "./home.jsx";
 import { BrowserRouter, Router, Routes, Route } from "react-router-dom";
 import WebInfo from "./webInfo.jsx";
+
 function App() {
   return (
     <>
