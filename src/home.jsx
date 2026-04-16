@@ -36,41 +36,59 @@ const Home = () => {
   let [value, setValue] = useState("");
   const QaA = [
     {
-      que: "What is your name",
+      que: "what is your name",
       ans: "I am caprarim, a front-end developer who is on the journey to be a fullstack dev :)",
       shortForm: /name|who/,
     },
     {
-      que: "Why did you start coding",  
+      que: "why did u start coding",
       ans: "Coding my passion and i enjoy it",
       shortForm: /why|start|passion/,
     },
     {
-      que: "How much experience do you have",
+      que: "wow much experience do you have",
       ans: "I have 6 months of experience with front-end",
       shortForm: /experience|long/,
     },
     {
-      que: "Do you have a portfolio?",
-      ans: "my work is uploaded in this website as well in my github",
-      shortForm: /portfolio | work | find | where/,
+      que: "you have a portfolio?",
+      ans: "Yes! I do have portfolio, It's uploaded in github and also, in this website you're in :)",
+      shortForm: /portfolio|work|find|where/,
     },
     {
       que: "hi",
       ans: "Hello! What would you like to ask about me?",
-      shortForm: /hi | hey | hii | heya | hello/,
+      shortForm: /^(hi|hey|hii|heya|hello|yo)$/,
+    },
+    {
+      que: "how are you",
+      ans: "I'm good! What would you like to know about me?",
+      shortForm: /how|good|wsp|wsg/,
+    },
+    {
+      que: "how old are u",
+      ans: "I'm 16 years old",
+      shortForm: /age|old/,
     },
   ];
 
   function submitQuestion() {
-    QaA.map((q) => {
-      if (value === q.que) {
-        setAIAns(q.ans);
-      }
-      if (q.shortForm.test(value)) {
-        setAIAns(q.ans);
-      }
+    setAIAns("");
+    const trimmedVal = value.trim().toLowerCase();
+    if (trimmedVal.trim().toLowerCase() === "") {
+      setAIAns("You must write something");
+      setValue("");
+      return;
+    }
+    const matchedQuestion = QaA.find((q) => {
+      return trimmedVal === q.que || q.shortForm.test(trimmedVal);
     });
+    if (matchedQuestion) {
+      setAIAns(matchedQuestion.ans);
+    } else {
+      setAIAns("Sorry! I cannot answer this question!");
+    }
+    console.log(matchedQuestion);
     setValue("");
   }
   const featuredProjects = [
@@ -363,7 +381,7 @@ const Home = () => {
           <span className="text-base sm:text-lg">🤖</span>
           <span>AI</span>
         </button>
-        <section  
+        <section
           className="relative isolate min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat lg:pt-28 lg:pb-8"
           style={{
             backgroundImage: "url('/myBg.png')",
